@@ -1,0 +1,95 @@
+{
+  "fields": [
+    {
+      "label": "Name",
+      "name": "name",
+      "type": "text",
+      "required": true,
+      "placeholder": "Enter your name"
+    },
+    {
+      "label": "Email",
+      "name": "email",
+      "type": "email",
+      "required": true,
+      "placeholder": "Enter your email"
+    },
+    {
+      "label": "Phone Number",
+      "name": "phone",
+      "type": "text",
+      "pattern": "^\\d{10}$",
+      "patternError": "Phone number must contain 10 digits.",
+      "placeholder": "Enter your phone number"
+    },
+    {
+      "label": "Password",
+      "name": "password",
+      "type": "password",
+      "required": true,
+      "placeholder": "Enter your password"
+    },
+    {
+      "label": "Address",
+      "name": "address",
+      "type": "textarea",
+      "required": true,
+      "placeholder": "Enter your address"
+    },
+    {
+      "label": "Age",
+      "name": "age",
+      "type": "number",
+      "required": true,
+      "placeholder": "Enter your age"
+    },
+    {
+      "label": "Country",
+      "name": "country",
+      "type": "select",
+      "options": [
+        { "label": "India", "value": "india" },
+        { "label": "USA", "value": "usa" }
+      ],
+      "required": true
+    },
+    {
+      "label": "Gender",
+      "name": "gender",
+      "type": "radio",
+      "options": [
+        { "label": "Male", "value": "male" },
+        { "label": "Female", "value": "female" },
+        { "label": "Other", "value": "other" }
+      ]
+    },
+    {
+      "label": "Terms and Condition",
+      "name": "terms",
+      "type": "checkbox",
+      "required": true
+    },
+    {
+      "label": "State",
+      "name": "state",
+      "type": "select",
+      "options": [
+        { "label": "Gujarat", "value": "gujarat" },
+        { "label": "California", "value": "california" }
+      ],
+      "conditional": {
+        "field": "country",
+        "value": "india"
+      }
+    },
+    {
+      "label": "Zipcode",
+      "name": "zipcode",
+      "type": "text",
+      "conditional": {
+        "field": "state",
+        "value": "california"
+      }
+    }
+  ]
+}
