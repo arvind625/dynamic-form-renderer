@@ -23,6 +23,7 @@ interface Field {
     | "select"
     | "checkbox"
     | "radio";
+  initialValue?: string | boolean; // Added initialValue
   required?: boolean;
   placeholder?: string;
   options?: Option[];
@@ -59,11 +60,16 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ config }) => {
   useEffect(() => {
     // Initially set all fields to visible
     if (config?.fields) {
+      const initialFormData: FormData = {};
       const initialVisibility: VisibleFields = {};
       config.fields.forEach((field) => {
+        if (field.initialValue !== undefined) {
+          initialFormData[field.name] = field.initialValue;
+        }
         initialVisibility[field.name] = true;
       });
       setVisibleFields(initialVisibility);
+      setFormData(initialFormData);
     }
   }, [config]);
 
