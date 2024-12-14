@@ -1,7 +1,5 @@
 # Getting Started with Dynamic form render
 
-website [link](http://dynamic-form-renderer.s3-website.ap-south-1.amazonaws.com/)
-
 clone the repo [Dynamic Form Renderer](https://github.com/arvind625/dynamic-form-renderer).
 
 ### Available Scripts
@@ -30,7 +28,7 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
-### Uses Guide
+### Uses Guide [website link](http://dynamic-form-renderer.s3-website.ap-south-1.amazonaws.com/)
 
 - past or add json data in json text editor
 - click on load config
