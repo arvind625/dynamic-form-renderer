@@ -1,36 +1,10 @@
-// src/App.tsx
-import React, { useState, ChangeEvent } from "react";
-import { DynamicForm } from "./components";
 import "./App.css";
-import mockJson from "./components/dynamic-form/mock.json";
-
-interface FormConfig {
-  fields: any[];
-}
+import { DynamicForm } from "./components";
+import { useGetJsonConfig } from "./libs/hooks/use-get-json-config";
 
 function App() {
-  const [jsonConfig, setJsonConfig] = useState<string>(
-    JSON.stringify(mockJson, null, 2)
-  );
-  const [config, setConfig] = useState<FormConfig | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  const handleJsonChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setJsonConfig(event.target.value);
-    setError(null);
-  };
-
-  const handleLoadConfig = () => {
-    try {
-      const parsedConfig: FormConfig = JSON.parse(jsonConfig);
-      setConfig(parsedConfig);
-      setError(null);
-    } catch (e: any) {
-      setError("Invalid JSON");
-      setConfig(null);
-    }
-  };
-  console.log("jsonConfig => ", jsonConfig);
+  const { jsonConfig, config, error, handleJsonChange, handleLoadConfig } =
+    useGetJsonConfig();
 
   return (
     <div className="App">
