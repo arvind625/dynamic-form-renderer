@@ -1,5 +1,7 @@
 # Getting Started with Dynamic form render
 
+website [link](http://dynamic-form-renderer.s3-website.ap-south-1.amazonaws.com/)
+
 clone the repo [Dynamic Form Renderer](https://github.com/arvind625/dynamic-form-renderer).
 
 ### Available Scripts
@@ -29,9 +31,11 @@ Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
 ### Uses Guide
+
 - past or add json data in json text editor
 - click on load config
 - form will be visible if config will be valid json
 
 ### Json input fields and attributes info [input_fields](./src/libs//interface.ts)
+
 - check Field interface for support of key and values in the input field
