@@ -1,1 +1,2 @@
-export * from "./FieldLabel";
+export * from "./field-label";
+export * from "./form-inputs";

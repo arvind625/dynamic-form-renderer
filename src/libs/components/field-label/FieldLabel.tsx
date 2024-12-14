@@ -1,4 +1,4 @@
-import { Field } from "../interface";
+import { Field } from "../../interface";
 
 interface FieldLabelProps {
   field: Field;

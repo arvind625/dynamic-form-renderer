@@ -1,6 +1,6 @@
 import "./App.css";
 import { DynamicForm } from "./components";
-import { useGetJsonConfig } from "./libs/hooks/use-get-json-config";
+import { useGetJsonConfig } from "./libs";
 
 function App() {
   const { jsonConfig, config, error, handleJsonChange, handleLoadConfig } =
