@@ -1,57 +1,17 @@
-// src/components/DynamicForm.tsx
 import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
-
-interface Option {
-  label: string;
-  value: string;
-}
-
-interface Conditional {
-  field: string;
-  value: string;
-}
-
-interface Field {
-  label: string;
-  name: string;
-  type:
-    | "text"
-    | "password"
-    | "email"
-    | "number"
-    | "textarea"
-    | "select"
-    | "checkbox"
-    | "radio";
-  initialValue?: string | boolean; // Added initialValue
-  required?: boolean;
-  placeholder?: string;
-  options?: Option[];
-  conditional?: Conditional;
-  pattern?: string;
-  patternError?: string;
-}
-
-interface FormConfig {
-  fields: Field[];
-}
-
-interface FormData {
-  [key: string]: string | boolean;
-}
-
-interface Errors {
-  [key: string]: string;
-}
-
-interface VisibleFields {
-  [key: string]: boolean;
-}
+import {
+  Errors,
+  Field,
+  FormData,
+  FormConfig,
+  VisibleFields,
+  FieldLabel,
+  FieldTypeEnum,
+} from "../../libs";
 
 interface DynamicFormProps {
   config: FormConfig;
 }
-
 export const DynamicForm: React.FC<DynamicFormProps> = ({ config }) => {
   const [formData, setFormData] = useState<FormData>({});
   const [visibleFields, setVisibleFields] = useState<VisibleFields>({});
@@ -63,8 +23,8 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ config }) => {
       const initialFormData: FormData = {};
       const initialVisibility: VisibleFields = {};
       config.fields.forEach((field) => {
-        if (field.initialValue !== undefined) {
-          initialFormData[field.name] = field.initialValue;
+        if (field.value) {
+          initialFormData[field.name] = field.value;
         }
         initialVisibility[field.name] = true;
       });
@@ -90,6 +50,7 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ config }) => {
       ...formData,
       [name]: type === "checkbox" ? checked : value,
     });
+    console.log("event", event.target.value);
   };
 
   const updateVisibleFields = (config: FormConfig, formData: FormData) => {
@@ -171,12 +132,15 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ config }) => {
       return null;
     }
     switch (field.type) {
-      case "text":
-      case "password":
+      case FieldTypeEnum.TEXT:
+      case FieldTypeEnum.PASSWORD:
+      case FieldTypeEnum.EMAIL:
+      case FieldTypeEnum.NUMBER:
         return (
-          <div key={field.name}>
-            <label>{field.label}</label>
+          <div key={field.name} className="flex_col gap_6">
+            <FieldLabel field={field} />
             <input
+              id={field.name}
               type={field.type}
               name={field.name}
               value={(formData[field.name] as string) || ""}
@@ -188,43 +152,12 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ config }) => {
             )}
           </div>
         );
-      case "email":
+      case FieldTypeEnum.TEXT_AREA:
         return (
-          <div key={field.name}>
-            <label>{field.label}</label>
-            <input
-              type="email"
-              name={field.name}
-              value={(formData[field.name] as string) || ""}
-              onChange={handleInputChange}
-              placeholder={field.placeholder}
-            />
-            {errors[field.name] && (
-              <div className="error">{errors[field.name]}</div>
-            )}
-          </div>
-        );
-      case "number":
-        return (
-          <div key={field.name}>
-            <label>{field.label}</label>
-            <input
-              type="number"
-              name={field.name}
-              value={(formData[field.name] as string) || ""}
-              onChange={handleInputChange}
-              placeholder={field.placeholder}
-            />
-            {errors[field.name] && (
-              <div className="error">{errors[field.name]}</div>
-            )}
-          </div>
-        );
-      case "textarea":
-        return (
-          <div key={field.name}>
-            <label>{field.label}</label>
+          <div key={field.name} className="flex_col gap_6">
+            <FieldLabel field={field} />
             <textarea
+              id={field.name}
               name={field.name}
               value={(formData[field.name] as string) || ""}
               onChange={handleInputChange}
@@ -235,11 +168,12 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ config }) => {
             )}
           </div>
         );
-      case "select":
+      case FieldTypeEnum.SELECT:
         return (
-          <div key={field.name}>
-            <label>{field.label}</label>
+          <div key={field.name} className="flex_col gap_6">
+            <FieldLabel field={field} />
             <select
+              id={field.name}
               name={field.name}
               value={(formData[field.name] as string) || ""}
               onChange={handleInputChange}
@@ -256,39 +190,137 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ config }) => {
             )}
           </div>
         );
-      case "checkbox":
+      case FieldTypeEnum.CHECKBOX:
         return (
-          <div key={field.name}>
-            <label>
+          <div key={field.name} className="flex_col gap_6">
+            <div key={field.name} className="flex_row gap_6">
               <input
+                id={field.name}
                 type="checkbox"
                 name={field.name}
                 checked={(formData[field.name] as boolean) || false}
                 onChange={handleInputChange}
               />
-              {field.label}
-            </label>
+              <FieldLabel field={field} />
+            </div>
             {errors[field.name] && (
               <div className="error">{errors[field.name]}</div>
             )}
           </div>
         );
-      case "radio":
+      case FieldTypeEnum.RADIO:
         return (
-          <div key={field.name}>
-            <label>{field.label}</label>
+          <div key={field.name} className="flex_col gap_6">
+            <FieldLabel field={field} />
             {field.options?.map((option) => (
-              <div key={option.value}>
+              <div key={option.value} className="flex_row">
                 <input
+                  id={field.name}
                   type="radio"
                   name={field.name}
                   value={option.value}
                   checked={(formData[field.name] as string) === option.value}
                   onChange={handleInputChange}
                 />
-                <label>{option.label}</label>
+                <label htmlFor={field.name}>{option.label}</label>
               </div>
             ))}
+            {errors[field.name] && (
+              <div className="error">{errors[field.name]}</div>
+            )}
+          </div>
+        );
+      case FieldTypeEnum.FILE:
+        return (
+          <div key={field.name} className="flex_col gap_6">
+            <FieldLabel field={field} />
+            <input
+              type="file"
+              id={field.name}
+              name={field.name}
+              onChange={handleInputChange}
+            />
+            {errors[field.name] && (
+              <div className="error">{errors[field.name]}</div>
+            )}
+            {formData[field.name] &&
+              typeof formData[field.name] !== "string" && (
+                <p>Selected File: {(formData[field.name] as File)?.name}</p>
+              )}
+          </div>
+        );
+      case FieldTypeEnum.COLOR:
+        return (
+          <div key={field.name} className="flex_col gap_6">
+            <FieldLabel field={field} />
+            <input
+              type="color"
+              id={field.name}
+              name={field.name}
+              value={(formData[field.name] as string) ?? "#4caf50"}
+              onChange={handleInputChange}
+            />
+            <p>{`Selected Color: ${formData[field.name]}`}</p>
+            {errors[field.name] && (
+              <div className="error">{errors[field.name]}</div>
+            )}
+          </div>
+        );
+      case FieldTypeEnum.DATE:
+        return (
+          <div key={field.name} className="flex_col gap_6">
+            <FieldLabel field={field} />
+            <input
+              id={field.name}
+              type="date"
+              name={field.name}
+              value={(formData[field.name] as string) || ""}
+              onChange={handleInputChange}
+              min={field.min}
+              max={field.max}
+            />
+            {errors[field.name] && (
+              <div className="error">{errors[field.name]}</div>
+            )}
+          </div>
+        );
+      case FieldTypeEnum.DATE_TIME_LOCAL:
+        return (
+          <div key={field.name} className="flex_col gap_6">
+            <FieldLabel field={field} />
+            <input
+              type="datetime-local"
+              name={field.name}
+              id={field.name}
+              value={(formData[field.name] as string) || ""}
+              onChange={handleInputChange}
+              min={field.min}
+              max={field.max}
+            />
+            {errors[field.name] && (
+              <div className="error">{errors[field.name]}</div>
+            )}
+          </div>
+        );
+      case FieldTypeEnum.RANGE:
+        return (
+          <div key={field.name} className="flex_col gap_6">
+            <FieldLabel
+              field={field}
+              value={`${field.label}: ${
+                (formData[field.name] as number) || field.min
+              }`}
+            />
+            <input
+              id={field.name}
+              type="range"
+              name={field.name}
+              min={field.min}
+              max={field.max}
+              step={field.step}
+              value={(formData[field.name] as number) || field.min}
+              onChange={handleInputChange}
+            />
             {errors[field.name] && (
               <div className="error">{errors[field.name]}</div>
             )}
@@ -300,7 +332,7 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ config }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className={"form-container"}>
       {config?.fields?.map((field) => renderField(field))}
       <button type="submit">Submit</button>
     </form>

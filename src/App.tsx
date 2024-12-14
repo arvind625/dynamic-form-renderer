@@ -2,13 +2,16 @@
 import React, { useState, ChangeEvent } from "react";
 import { DynamicForm } from "./components";
 import "./App.css";
+import mockJson from "./components/dynamic-form/mock.json";
 
 interface FormConfig {
   fields: any[];
 }
 
 function App() {
-  const [jsonConfig, setJsonConfig] = useState<string>("");
+  const [jsonConfig, setJsonConfig] = useState<string>(
+    JSON.stringify(mockJson, null, 2)
+  );
   const [config, setConfig] = useState<FormConfig | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -27,21 +30,30 @@ function App() {
       setConfig(null);
     }
   };
+  console.log("jsonConfig => ", jsonConfig);
 
   return (
     <div className="App">
-      <h1>Dynamic Form Renderer</h1>
-      <textarea
-        rows={10}
-        cols={80}
-        placeholder="Paste your JSON config here..."
-        value={jsonConfig}
-        onChange={handleJsonChange}
-      />
-      <br />
-      <button onClick={handleLoadConfig}>Load Config</button>
-      {error && <div className="error">{error}</div>}
-      {config && <DynamicForm config={config} />}
+      <h1 className="header">Dynamic Form Renderer</h1>
+      <div className="main-container">
+        <section className="flex_col flex_1 json-container">
+          <textarea
+            className="flex_1"
+            placeholder="Paste your JSON config here..."
+            value={jsonConfig}
+            onChange={handleJsonChange}
+          />
+          <button onClick={handleLoadConfig}>Load Config</button>
+          {error && <div className="error">{error}</div>}
+        </section>
+        <section className="right-section">
+          {config ? (
+            <DynamicForm config={config} />
+          ) : (
+            <div className="empty_field"> No field to render</div>
+          )}
+        </section>
+      </div>
     </div>
   );
 }

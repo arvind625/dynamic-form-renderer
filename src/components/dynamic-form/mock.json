@@ -64,12 +64,6 @@
       ]
     },
     {
-      "label": "Terms and Condition",
-      "name": "terms",
-      "type": "checkbox",
-      "required": true
-    },
-    {
       "label": "State",
       "name": "state",
       "type": "select",
@@ -90,6 +84,51 @@
         "field": "state",
         "value": "california"
       }
+    },
+    {
+      "label": "Appointment Date",
+      "name": "appointmentDate",
+      "type": "date",
+      "required": true,
+      "min": "2024-01-01",
+      "max": "2024-12-31",
+      "value": "2024-07-01"
+    },
+    {
+      "label": "Appointment Time",
+      "name": "appointmentTime",
+      "type": "datetime-local",
+      "required": true,
+      "min": "2024-01-01T00:00",
+      "max": "2024-12-31T23:59",
+      "value": "2024-07-01T12:00"
+    },
+    {
+      "label": "Volume",
+      "name": "volume",
+      "type": "range",
+      "min": "0",
+      "max": "100",
+      "step": "5",
+      "value": 50
+    },
+    {
+      "label": "Profile Image",
+      "name": "profileImage",
+      "type": "file",
+      "required": true
+    },
+    {
+      "label": "Favourite Color",
+      "name": "favouriteColor",
+      "type": "color",
+      "initialValue": "#ff0000"
+    },
+    {
+      "label": "Terms and Condition",
+      "name": "terms",
+      "type": "checkbox",
+      "required": true
     }
   ]
 }

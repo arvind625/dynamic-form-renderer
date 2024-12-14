@@ -26,6 +26,17 @@ body,
   background-image: url("./assets/background_img.jpg");
 }
 
+.main-container {
+  flex: 1;
+  display: flex;
+  gap: 24px;
+  overflow-y: hidden;
+}
+.right-section {
+  display: flex;
+  flex: 1;
+  overflow-y: hidden;
+}
 .form-container {
   display: flex;
   flex: 1;
@@ -152,6 +163,9 @@ input[type="color"] {
   align-items: flex-start;
 }
 
+.flex_1 {
+  flex: 1;
+}
 .gap_24 {
   gap: 24px;
 }
